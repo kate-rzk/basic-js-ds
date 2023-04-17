@@ -16,6 +16,7 @@ const { ListNode } = require('../extensions/list-node.js');
 class Queue {
   constructor() {
     this.head = null;
+    this.tail = null;
   }
 
   getUnderlyingList() {
@@ -24,22 +25,27 @@ class Queue {
 
   enqueue(value) {
     const newNode = new ListNode(value);
+
     if (!this.head) {
       this.head = newNode;
+      this.tail = newNode;
     } else {
-      let current = this.head;
-      while (current.next) {
-        current = current.next;
-      }
-      current.next = newNode;
+      this.tail.next = newNode;
+      this.tail = newNode;
     }
   }
 
   dequeue() {
-    if (!this.head) return null;
-    const nodeToRemove = this.head;
+    if (!this.head) {
+      return null;
+    }
+    const nodeToRemove = this.head.value;
     this.head = this.head.next;
-    return nodeToRemove.val;
+    if (!this.head) {
+      this.tail = null;
+    }
+
+    return nodeToRemove;
   }
 }
 
